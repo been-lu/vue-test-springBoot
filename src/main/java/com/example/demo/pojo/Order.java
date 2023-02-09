@@ -69,15 +69,7 @@ public class Order {
         this.others = others;
     }
 
-    public Order(short oid, short uid, short lid, Date date, short status, short cid, String others) {
-        this.oid = oid;
-        this.uid = uid;
-        this.lid = lid;
-        this.date = date;
-        this.status = status;
-        this.cid = cid;
-        this.others = others;
-    }
+
 
 
 }

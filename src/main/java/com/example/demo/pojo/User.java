@@ -1,8 +1,10 @@
 package com.example.demo.pojo;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
-@Component
+
+@Data
 public class User {
     private short  uid;
     private String uname;
@@ -50,11 +52,5 @@ public class User {
         this.others = others;
     }
 
-    public User(short uid, String uname, String location, short age, String others) {
-        this.uid = uid;
-        this.uname = uname;
-        this.location = location;
-        this.age = age;
-        this.others = others;
-    }
+
 }

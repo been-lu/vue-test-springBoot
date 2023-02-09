@@ -11,14 +11,7 @@ public class Lawyer {
     private short status;//0为未注册，1为经管理员审核注册
     private String others;
 
-    public Lawyer(short lid, String lname, short age, String location, short status, String others) {
-        this.lid = lid;
-        this.lname = lname;
-        this.age = age;
-        this.location = location;
-        this.status = status;
-        this.others = others;
-    }
+
 
     public short getLid() {
         return lid;

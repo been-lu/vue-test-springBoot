@@ -59,12 +59,5 @@ public class Contract {
         this.others = others;
     }
 
-    public Contract(short cid, short uid, short lid, short status, double price, String others) {
-        this.cid = cid;
-        this.uid = uid;
-        this.lid = lid;
-        this.status = status;
-        this.price = price;
-        this.others = others;
-    }
+
 }
