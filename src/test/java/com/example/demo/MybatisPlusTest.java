@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,4 +46,26 @@ public class MybatisPlusTest {
         System.out.println(userMapper.deleteByMap(map));
 
     }
+
+    @Test
+    public void testUpdate(){
+
+    }
+
+    @Test
+    public void testSelect(){
+        //SELECT uid,uname,location,age,others,pwd,email FROM user WHERE uname = ?
+        Map<String,Object> map= new HashMap<>();
+        map.put("uname", "wangwu");
+        System.out.println(userMapper.selectByMap(map));
+
+
+        //SELECT uid,uname,location,age,others,pwd,email FROM user WHERE uid IN ( ? , ? , ? )
+        System.out.println("----------");
+        List<Integer>list= Arrays.asList(0,1,3);
+        List<User> users=userMapper.selectBatchIds(list);
+        users.forEach(System.out::println);
+    }
+
+
 }

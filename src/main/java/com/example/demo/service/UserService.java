@@ -6,18 +6,62 @@ import org.apache.ibatis.javassist.compiler.ast.ASTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserService {
     @Autowired
     UserMapper userMapper;
+
+    /*
+    *列举一下要实现的功能
+    * 用户注册
+    * 用户信息修改
+    * 用户登录
+    *   用户登录应使用邮箱与密码
+    *
+    * */
 
     public int save(User user){
         if(user.getUid()==null){
             return userMapper.insert(user);
         }
         else{
-            return userMapper.update(user, null);
+            return userMapper.updateById(user);
         }
+    }
 
+    //默认前端传来用户名与密码
+    public boolean login(User user){
+        Map<String,Object> map=new HashMap<>();
+        map.put("email", user.getEmail());
+        map.put("pwd", user.getPwd());
+        if(userMapper.selectByMap(map).isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    //用户注册
+    public Map<Boolean,String> signin(User user){
+        Map<Boolean,String> res=new HashMap<>();
+        Map<String,Object> map=new HashMap<>();
+        map.put("email", user.getEmail());
+        if(userMapper.selectByMap(map).isEmpty()){
+            userMapper.insert(user);
+            res.put(true, "success");
+        }
+        else{
+            res.put(false, "Email exists！\n sing in failed!");
+        }
+        return res;
+    }
+
+    public void update(User user){
+        //不允许修改邮箱
+        user.setEmail(null);
+        userMapper.updateById(user);
     }
 }
