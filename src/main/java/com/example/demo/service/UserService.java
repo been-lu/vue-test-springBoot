@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.User;
 import org.apache.ibatis.javassist.compiler.ast.ASTree;

@@ -11,10 +11,10 @@ import java.util.Date;
 @Data
 @TableName("msg")
 public class Msg {
-    @TableId(value = "mid",type = IdType.AUTO)
-    private Integer mid;
-    private Integer uid;
-    private Integer lid;
+    @TableId(value = "mid")
+    private Long mid;
+    private Long uid;
+    private Long lid;
     private String others;
     private Date date;
     private Integer status;//0为未处理，1为已处理

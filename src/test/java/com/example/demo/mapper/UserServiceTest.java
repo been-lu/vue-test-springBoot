@@ -17,7 +17,7 @@ public class UserServiceTest {
     @Test
     public void testLogin(){
         User user=new User();
-        user.setEmail("1222@qq.com");
+        user.setEmail("五xyza@qq.com");
         user.setPwd("qwerty");
         boolean res=false;
         try{
@@ -36,10 +36,10 @@ public class UserServiceTest {
     @Test
     public void testSignin(){
         User user=new User();
-        user.setUname("李林");
+        user.setUname("孙悟空");
         user.setAge(23);
         user.setPwd("qwerty");
-        user.setEmail("1234@qq.com");
+        user.setEmail("五xyza@qq.com");
         Map<Boolean,String> res;
         res=userService.signin(user);
         if(res.containsKey(true)){
@@ -52,9 +52,10 @@ public class UserServiceTest {
     }
     @Test
     public void testUpdate(){
+        //记得邮箱不允许修改
         User user=new User();
-        user.setUid(2098647050);
-        user.setEmail("12354@qq.com");
+        user.setUid(1625468622041653250L);
+        user.setLocation("tianjin");
         userService.update(user);
     }
 }

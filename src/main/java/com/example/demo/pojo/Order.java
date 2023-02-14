@@ -10,10 +10,10 @@ import java.sql.Date;
 @Data
 @TableName("order")
 public class Order {
-    @TableId(value = "oid",type = IdType.AUTO)
-    private Integer oid;
-    private Integer  uid;
-    private Integer lid;
+    @TableId(value = "oid")
+    private Long oid;
+    private Long  uid;
+    private Long lid;
     private Date date;
     private Integer status;//0为提出未接受，1为已接受，2为受理中，3为已完结
     private Integer cid;

@@ -9,10 +9,10 @@ import lombok.Data;
 @Data
 @TableName("contract")
 public class Contract {
-    @TableId(value = "cid",type = IdType.AUTO)
-    private Integer cid;
-    private Integer uid;
-    private Integer lid;
+    @TableId(value = "cid")
+    private Long cid;
+    private Long uid;
+    private Long lid;
     private Integer status;//0为未签署，1为已签署并预支付，2为已完成
     private double price;
     private String others;

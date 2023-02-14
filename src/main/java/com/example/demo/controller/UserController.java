@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserMapper userMapper;
+    UserMapper userMapper;
 
     @Autowired
     UserService userService;

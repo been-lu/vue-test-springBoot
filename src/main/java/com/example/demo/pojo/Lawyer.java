@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 @TableName("lawyer")
 public class Lawyer {
-    @TableId(value = "lid",type = IdType.AUTO)
-    private Integer lid;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long lid;
     private String lname;
     private Integer age;
     private String location;
