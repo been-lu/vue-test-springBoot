@@ -16,7 +16,7 @@ public class UserService {
             return userMapper.insert(user);
         }
         else{
-            return userMapper.update(user);
+            return userMapper.update(user, null);
         }
 
     }
