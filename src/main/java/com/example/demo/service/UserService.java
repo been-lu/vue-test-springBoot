@@ -2,18 +2,20 @@ package com.example.demo.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.User;
 import org.apache.ibatis.javassist.compiler.ast.ASTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class UserService {
+public class UserService extends ServiceImpl<UserMapper,User> {
     @Autowired
     UserMapper userMapper;
 
@@ -26,14 +28,14 @@ public class UserService {
     *
     * */
 
-    public int save(User user){
-        if(user.getUid()==null){
-            return userMapper.insert(user);
-        }
-        else{
-            return userMapper.updateById(user);
-        }
-    }
+//    public boolean save(User user){
+//        if(user.getUid()==null){
+//            return userMapper.insert(user);
+//        }
+//        else{
+//            return userMapper.updateById(user);
+//        }
+//    }
 
     //默认前端传来用户名与密码
     public boolean login(User user){
@@ -72,14 +74,20 @@ public class UserService {
     public List<User> findByPage(Integer pageNum,Integer pageSize,String uname){
         Page<User> page=new Page<>(pageNum,pageSize);
         QueryWrapper<User>queryWrapper=new QueryWrapper<>();
-        queryWrapper.like("uname", uname);
+        if(!"".equals(uname)){
+            queryWrapper.like("uname", uname);
+        }
         Page<User> res=userMapper.selectPage(page, queryWrapper);
         return res.getRecords();
+
+
     }
 
     public Long findCount(String uname){
         QueryWrapper<User>queryWrapper=new QueryWrapper<>();
-        queryWrapper.like("uname", uname);
+        if(!"".equals(uname)){
+            queryWrapper.like("uname", uname);
+        }
         return userMapper.selectCount(queryWrapper).longValue();
     }
 }

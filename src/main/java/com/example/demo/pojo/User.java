@@ -17,7 +17,6 @@ public class User {
     private String location;
     private Integer age;
     private String others;
-    @JsonIgnore
     private String pwd;
     private String email;
 

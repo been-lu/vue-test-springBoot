@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.User;
 import com.example.demo.service.UserService;
@@ -26,9 +29,24 @@ public class UserController {
 
     //前端记得要一定要有邮箱
     @PostMapping("/saveOrUpdate")
-    public Integer save(@RequestBody User user){
+    public Integer saveOrUpdate(@RequestBody User user){
         //add or update
-        return userService.save(user);
+        if (user.getUid()==null) {
+            Map<Boolean ,String> map=userService.signin(user);
+            if(map.containsKey(false)){//登陆失败，同一邮箱不允许多个账户
+                QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+                queryWrapper.eq("email", user.getEmail());
+                return userMapper.update(user,queryWrapper);
+            }
+            else{
+                return 0;
+            }
+        }
+        else{
+             userMapper.updateById(user);
+             return 1;
+        }
+
     }
 
     @RequestMapping("/login")
@@ -42,13 +60,26 @@ public class UserController {
 
     //分页查询
     @GetMapping("/page")
-    public Map<String,Object> findPage(@RequestParam Integer pageNum,
-                                       @RequestParam Integer pageSize,
-                                       @RequestParam String uname){
-        Map<String,Object> res=new HashMap<>();
-        res.put("total", userService.findCount(uname));
-        res.put("data",  userService.findByPage(pageNum, pageSize,uname));
+    public IPage<User> findPage(@RequestParam Integer pageNum,
+                          @RequestParam Integer pageSize,
+                          @RequestParam(defaultValue = "") String uname,
+                          @RequestParam(defaultValue = "") String email,
+                          @RequestParam(defaultValue = "") String location){
 
-        return res;
+        IPage<User> page =new Page<>(pageNum,pageSize);
+
+
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("uid");
+        if (!"".equals(uname)) {
+            queryWrapper.like("uname", uname);
+        }
+        if (!"".equals(email)) {
+            queryWrapper.like("email", email);
+        }
+        if (!"".equals(location)) {
+            queryWrapper.like("location", location);
+        }
+        return userService.page(page,queryWrapper);
     }
 }

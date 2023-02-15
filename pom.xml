@@ -84,7 +84,16 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-<!--&lt;!&ndash;        logback日志记录&ndash;&gt;-->
+
+        <!--swagger-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+
+        <!--&lt;!&ndash;        logback日志记录&ndash;&gt;-->
 <!--        <dependency>-->
 <!--            <groupId>org.slf4j</groupId>-->
 <!--            <artifactId>slf4j-api</artifactId>-->
