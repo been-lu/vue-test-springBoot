@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.User;
 import org.apache.ibatis.javassist.compiler.ast.ASTree;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -55,7 +57,7 @@ public class UserService {
             res.put(true, "success");
         }
         else{
-            res.put(false, "Email exists！\n sing in failed!");
+            res.put(false, "Email exists！\n sign in failed!");
         }
         return res;
     }
@@ -64,5 +66,16 @@ public class UserService {
         //不允许修改邮箱
         user.setEmail(null);
         userMapper.updateById(user);
+    }
+
+    //分页查询
+    public List<User> findByPage(Integer pageNum,Integer pageSize){
+        Page<User> page=new Page<>(pageNum,pageSize);
+        Page<User> res=userMapper.selectPage(page, null);
+        return res.getRecords();
+    }
+
+    public Long findCount(){
+        return userMapper.selectCount(null).longValue();
     }
 }

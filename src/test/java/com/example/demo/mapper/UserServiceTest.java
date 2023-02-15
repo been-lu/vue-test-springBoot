@@ -36,10 +36,10 @@ public class UserServiceTest {
     @Test
     public void testSignin(){
         User user=new User();
-        user.setUname("孙悟空");
+        user.setUname("猪八戒");
         user.setAge(23);
         user.setPwd("qwerty");
-        user.setEmail("五xyza@qq.com");
+        user.setEmail("高老庄@163.com");
         Map<Boolean,String> res;
         res=userService.signin(user);
         if(res.containsKey(true)){
