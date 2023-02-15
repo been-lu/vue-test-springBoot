@@ -42,11 +42,12 @@ public class UserController {
 
     //分页查询
     @GetMapping("/page")
-    public Map<String,Object> findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize){
-        Long count=userService.findCount();
+    public Map<String,Object> findPage(@RequestParam Integer pageNum,
+                                       @RequestParam Integer pageSize,
+                                       @RequestParam String uname){
         Map<String,Object> res=new HashMap<>();
-        res.put("total", userService.findCount());
-        res.put("data",  userService.findByPage(pageNum, pageSize));
+        res.put("total", userService.findCount(uname));
+        res.put("data",  userService.findByPage(pageNum, pageSize,uname));
 
         return res;
     }

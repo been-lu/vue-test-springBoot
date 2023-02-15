@@ -3,6 +3,7 @@ package com.example.demo.pojo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class User {
     private String location;
     private Integer age;
     private String others;
+    @JsonIgnore
     private String pwd;
     private String email;
 

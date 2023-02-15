@@ -69,13 +69,17 @@ public class UserService {
     }
 
     //分页查询
-    public List<User> findByPage(Integer pageNum,Integer pageSize){
+    public List<User> findByPage(Integer pageNum,Integer pageSize,String uname){
         Page<User> page=new Page<>(pageNum,pageSize);
-        Page<User> res=userMapper.selectPage(page, null);
+        QueryWrapper<User>queryWrapper=new QueryWrapper<>();
+        queryWrapper.like("uname", uname);
+        Page<User> res=userMapper.selectPage(page, queryWrapper);
         return res.getRecords();
     }
 
-    public Long findCount(){
-        return userMapper.selectCount(null).longValue();
+    public Long findCount(String uname){
+        QueryWrapper<User>queryWrapper=new QueryWrapper<>();
+        queryWrapper.like("uname", uname);
+        return userMapper.selectCount(queryWrapper).longValue();
     }
 }
