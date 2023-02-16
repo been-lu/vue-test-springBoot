@@ -6,12 +6,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.User;
 import com.example.demo.service.UserService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -29,22 +28,25 @@ public class UserController {
 
     //前端记得要一定要有邮箱
     @PostMapping("/saveOrUpdate")
-    public Integer saveOrUpdate(@RequestBody User user){
+    public Boolean saveOrUpdate(@NotNull @RequestBody User user){
         //add or update
         if (user.getUid()==null) {
-            Map<Boolean ,String> map=userService.signin(user);
-            if(map.containsKey(false)){//登陆失败，同一邮箱不允许多个账户
-                QueryWrapper<User> queryWrapper=new QueryWrapper<>();
-                queryWrapper.eq("email", user.getEmail());
-                return userMapper.update(user,queryWrapper);
-            }
-            else{
-                return 0;
-            }
+//            Boolean res=userService.signin(user);
+//            if(!res){//登陆失败，同一邮箱不允许多个账户
+//                QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+//                queryWrapper.eq("email", user.getEmail());
+//                userMapper.update(user,queryWrapper);
+//                return true;
+//            }
+//            else{
+//                return false;
+//            }
+            user.setPwd("123456");
+            return userService.save(user);
         }
         else{
-             userMapper.updateById(user);
-             return 1;
+
+             return userService.updateById(user);
         }
 
     }
@@ -65,10 +67,7 @@ public class UserController {
                           @RequestParam(defaultValue = "") String uname,
                           @RequestParam(defaultValue = "") String email,
                           @RequestParam(defaultValue = "") String location){
-
         IPage<User> page =new Page<>(pageNum,pageSize);
-
-
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("uid");
         if (!"".equals(uname)) {
@@ -81,5 +80,12 @@ public class UserController {
             queryWrapper.like("location", location);
         }
         return userService.page(page,queryWrapper);
+    }
+
+
+    @PostMapping("/addUser")
+    private Boolean addUser(@RequestBody User user){
+        user.setPwd("123456");
+        return userService.signin(user);
     }
 }

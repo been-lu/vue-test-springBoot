@@ -5,10 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.User;
-import org.apache.ibatis.javassist.compiler.ast.ASTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,18 +48,17 @@ public class UserService extends ServiceImpl<UserMapper,User> {
     }
 
     //用户注册
-    public Map<Boolean,String> signin(User user){
-        Map<Boolean,String> res=new HashMap<>();
+    public Boolean signin(User user){
         Map<String,Object> map=new HashMap<>();
         map.put("email", user.getEmail());
         if(userMapper.selectByMap(map).isEmpty()){
             userMapper.insert(user);
-            res.put(true, "success");
+            return true;
         }
         else{
-            res.put(false, "Email exists！\n sign in failed!");
+            return false;
         }
-        return res;
+
     }
 
     public void update(User user){

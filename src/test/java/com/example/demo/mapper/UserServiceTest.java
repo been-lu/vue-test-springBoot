@@ -36,19 +36,19 @@ public class UserServiceTest {
     @Test
     public void testSignin(){
         User user=new User();
-        user.setUname("沙和尚");
-        user.setAge(23);
+        user.setUname("白龙马");
+        user.setAge(232);
         user.setPwd("qwerty");
-        user.setEmail("12345@163.com");
+        user.setEmail("123245@163.com");
         user.setLocation("流沙河");
         user.setOthers("挑担的");
-        Map<Boolean,String> res;
+        Boolean res;
         res=userService.signin(user);
-        if(res.containsKey(true)){
+        if(res){
             System.out.println("success!");
         }
         else{
-            System.out.println(res.get(false));
+            System.out.println("fail!");
         }
         
     }
