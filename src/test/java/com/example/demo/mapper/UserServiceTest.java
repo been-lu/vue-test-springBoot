@@ -1,5 +1,6 @@
 package com.example.demo.mapper;
 
+import com.example.demo.pojo.DTO.UserDTO;
 import com.example.demo.pojo.User;
 import com.example.demo.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class UserServiceTest {
 
     @Test
     public void testLogin(){
-        User user=new User();
+        UserDTO user=new UserDTO();
         user.setEmail("五xyza@qq.com");
         user.setPwd("qwerty");
         boolean res=false;

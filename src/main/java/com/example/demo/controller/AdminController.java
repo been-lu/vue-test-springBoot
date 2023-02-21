@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.pojo.Administrator;
+import com.example.demo.pojo.DTO.AdminDTO;
 import com.example.demo.service.AdministratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,5 +33,13 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/login")
+    public boolean login (@RequestBody AdminDTO adminDTO){
+        String aname = adminDTO.getAname();
+        String pwd = adminDTO.getPwd();
+        if (StrUtil.isBlank(aname) || StrUtil.isBlank(pwd))
+            return false;
+        return administratorService.login(adminDTO);
+    }
 
 }

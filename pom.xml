@@ -101,6 +101,12 @@
             <version>3.0.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.0.M4</version>
+        </dependency>
+
 
         <!--&lt;!&ndash;        logback日志记录&ndash;&gt;-->
 <!--        <dependency>-->
