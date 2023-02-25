@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.mapper.LawyerMapper;
-import com.example.demo.pojo.Administrator;
 import com.example.demo.pojo.DTO.LawyerDTO;
 import com.example.demo.pojo.Lawyer;
 import org.springframework.beans.factory.annotation.Autowired;

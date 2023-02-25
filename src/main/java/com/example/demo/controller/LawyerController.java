@@ -2,9 +2,7 @@ package com.example.demo.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.demo.pojo.Administrator;
 import com.example.demo.pojo.DTO.LawyerDTO;
-import com.example.demo.pojo.DTO.UserDTO;
 import com.example.demo.pojo.Lawyer;
 import com.example.demo.service.LawyerService;
 import org.springframework.beans.factory.annotation.Autowired;
