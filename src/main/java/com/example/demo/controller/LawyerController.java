@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.demo.common.Constants;
+import com.example.demo.common.Result;
 import com.example.demo.pojo.DTO.LawyerDTO;
 import com.example.demo.pojo.Lawyer;
 import com.example.demo.service.LawyerService;
@@ -18,12 +20,12 @@ public class LawyerController {
     private LawyerService lawyerService;
 
     @PostMapping("/login")
-    public boolean login(@RequestBody LawyerDTO lawyerDTO) {
+    public Result login(@RequestBody LawyerDTO lawyerDTO) {
         String email = lawyerDTO.getEmail();
         String pwd = lawyerDTO.getPwd();
         if (StrUtil.isBlank(email) || StrUtil.isBlank(pwd))
-            return false;
-        return lawyerService.login(lawyerDTO);
+            return Result.error(Constants.CODE_400,"参数错误");
+        return Result.success(lawyerService.login(lawyerDTO));
     }
 
     @PostMapping("/saveOrUpdate")

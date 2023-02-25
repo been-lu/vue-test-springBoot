@@ -6,4 +6,6 @@ import lombok.Data;
 public class UserDTO {
     private String email;
     private String pwd;
+    private String uid;
+    private String uname;
 }

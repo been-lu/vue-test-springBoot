@@ -6,4 +6,6 @@ import lombok.Data;
 public class LawyerDTO {
     private String email;
     private String pwd;
+    private String lid;
+    private String lname;
 }

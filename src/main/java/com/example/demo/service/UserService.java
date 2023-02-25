@@ -1,9 +1,12 @@
 package com.example.demo.service;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.demo.common.Constants;
+import com.example.demo.exception.ServiceException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.DTO.UserDTO;
 import com.example.demo.pojo.User;
@@ -19,7 +22,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     @Autowired
     UserMapper userMapper;
 
-    private static final Log LOG= Log.get();
+    private static final Log LOG = Log.get();
 
     /*
      *列举一下要实现的功能
@@ -30,27 +33,26 @@ public class UserService extends ServiceImpl<UserMapper, User> {
      *
      * */
 
-//    public boolean save(User user){
-//        if(user.getUid()==null){
-//            return userMapper.insert(user);
-//        }
-//        else{
-//            return userMapper.updateById(user);
-//        }
-//    }
 
     //默认前端传来用户名与密码
-    public boolean login(UserDTO userDTO) {
+    public UserDTO login(UserDTO userDTO) {
 
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("email", userDTO.getEmail())
                 .eq("pwd", userDTO.getPwd());
         try {
             User one = getOne(queryWrapper);
-            return one != null;
+            if (one != null) {
+                BeanUtil.copyProperties(one,userDTO,true);
+                return userDTO;
+            }
+            else{
+                throw new ServiceException(Constants.CODE_600,"用户名或用户错误");
+            }
+
         } catch (Exception e) {
             LOG.error(e);
-            return false;
+            throw new ServiceException(Constants.CODE_500,"系统错误");
         }
     }
 

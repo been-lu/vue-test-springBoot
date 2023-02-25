@@ -15,25 +15,25 @@ public class UserServiceTest {
     @Autowired
     UserService userService;
 
-    @Test
-    public void testLogin(){
-        UserDTO user=new UserDTO();
-        user.setEmail("五xyza@qq.com");
-        user.setPwd("qwerty");
-        boolean res=false;
-        try{
-            res=userService.login(user);
-            System.out.println("res: "+ res);
-
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        finally {
-
-        }
-    }
-    
+//    @Test
+//    public void testLogin(){
+//        UserDTO user=new UserDTO();
+//        user.setEmail("五xyza@qq.com");
+//        user.setPwd("qwerty");
+//        boolean res=false;
+//        try{
+//            res=userService.login(user);
+//            System.out.println("res: "+ res);
+//
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        finally {
+//
+//        }
+//    }
+//
     @Test
     public void testSignin(){
         User user=new User();

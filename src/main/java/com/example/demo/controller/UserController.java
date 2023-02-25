@@ -4,6 +4,8 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.demo.common.Constants;
+import com.example.demo.common.Result;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.DTO.UserDTO;
 import com.example.demo.pojo.User;
@@ -52,12 +54,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody UserDTO userDTO) {
+    public Result login(@RequestBody UserDTO userDTO) {
         String email = userDTO.getEmail();
         String pwd = userDTO.getPwd();
         if (StrUtil.isBlank(email) || StrUtil.isBlank(pwd))
-            return false;
-        return userService.login(userDTO);
+            return Result.error(Constants.CODE_400,"参数错误");
+        return Result.success(userService.login(userDTO));
     }
 
     //分页查询

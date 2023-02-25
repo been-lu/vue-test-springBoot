@@ -1,7 +1,11 @@
 package com.example.demo.service;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.demo.common.Constants;
+import com.example.demo.exception.ServiceException;
 import com.example.demo.mapper.AdministratorMapper;
 import com.example.demo.pojo.Administrator;
 import com.example.demo.pojo.DTO.AdminDTO;
@@ -13,15 +17,24 @@ public class AdministratorService  extends ServiceImpl<AdministratorMapper, Admi
     @Autowired
     AdministratorMapper administratorMapper;
 
-    public boolean login(AdminDTO adminDTO){
+    private static final Log LOG = Log.get();
+
+    public AdminDTO login(AdminDTO adminDTO){
         QueryWrapper<Administrator> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("aname", adminDTO.getAname())
                 .eq("pwd", adminDTO.getPwd());
         try {
             Administrator one= getOne(queryWrapper);
-            return one !=null;
+            if (one != null) {
+                BeanUtil.copyProperties(one,adminDTO,true);
+                return adminDTO;
+            }
+            else{
+                throw new ServiceException(Constants.CODE_600,"用户名或用户错误");
+            }
         }catch (Exception e){
-            return false;
+            LOG.error(e);
+            throw new ServiceException(Constants.CODE_500,"系统错误");
         }
 
 
