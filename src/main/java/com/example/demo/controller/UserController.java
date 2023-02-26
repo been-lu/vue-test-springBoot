@@ -8,6 +8,7 @@ import com.example.demo.common.Constants;
 import com.example.demo.common.Result;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.DTO.UserDTO;
+import com.example.demo.pojo.Lawyer;
 import com.example.demo.pojo.User;
 import com.example.demo.service.UserService;
 import org.jetbrains.annotations.NotNull;
@@ -62,6 +63,21 @@ public class UserController {
         return Result.success(userService.login(userDTO));
     }
 
+
+    @PostMapping("/register")
+    public Result register(@RequestBody User user) {
+        user.setUname("null");
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("email", user.getEmail());
+        if (!userService.list(queryWrapper).isEmpty()) {
+            return Result.error(Constants.CODE_600, "信箱已注册");
+        } else {
+            userService.save(user);
+            User one=userService.getOne(queryWrapper);
+            return Result.success(one);
+        }
+
+    }
     //分页查询
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum,

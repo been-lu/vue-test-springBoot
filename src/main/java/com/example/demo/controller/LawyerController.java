@@ -23,25 +23,40 @@ public class LawyerController {
         String email = lawyerDTO.getEmail();
         String pwd = lawyerDTO.getPwd();
         if (StrUtil.isBlank(email) || StrUtil.isBlank(pwd))
-            return Result.error(Constants.CODE_400,"参数错误");
+            return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(lawyerService.login(lawyerDTO));
     }
 
     @PostMapping("/saveOrUpdate")
     public Boolean saveOrUpdate(@RequestBody Lawyer lawyer) {
-        if (lawyer.getLid()!= null) {
+        if (lawyer.getLid() != null) {
             return lawyerService.updateById(lawyer);
         } else {
             QueryWrapper<Lawyer> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("email", lawyer.getEmail());
             if (!lawyerService.list(queryWrapper).isEmpty()) {
-                return lawyerService.update(lawyer,queryWrapper);
+                return lawyerService.update(lawyer, queryWrapper);
             } else {
-                if(lawyer.getPwd()==null)
+                if (lawyer.getPwd() == null)
                     lawyer.setPwd("123456");
                 return lawyerService.save(lawyer);
             }
         }
+    }
+
+    @PostMapping("/register")
+    public Result register(@RequestBody Lawyer lawyer) {
+        lawyer.setLname("null");
+        QueryWrapper<Lawyer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("email", lawyer.getEmail());
+        if (!lawyerService.list(queryWrapper).isEmpty()) {
+            return Result.error(Constants.CODE_600, "信箱已注册");
+        } else {
+            lawyerService.save(lawyer);
+            Lawyer one=lawyerService.getOne(queryWrapper);
+            return Result.success(one);
+        }
+
     }
 
     //分页查询
