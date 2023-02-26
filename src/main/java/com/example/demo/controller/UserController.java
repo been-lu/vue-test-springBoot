@@ -64,7 +64,7 @@ public class UserController {
 
     //分页查询
     @GetMapping("/page")
-    public IPage<User> findPage(@RequestParam Integer pageNum,
+    public Result findPage(@RequestParam Integer pageNum,
                                 @RequestParam Integer pageSize,
                                 @RequestParam(defaultValue = "") String uname,
                                 @RequestParam(defaultValue = "") String email,
@@ -81,7 +81,7 @@ public class UserController {
         if (!"".equals(location)) {
             queryWrapper.like("location", location);
         }
-        return userService.page(page, queryWrapper);
+        return Result.success(userService.page(page, queryWrapper));
     }
 
 

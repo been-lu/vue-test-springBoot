@@ -23,20 +23,20 @@ public class AdministratorService  extends ServiceImpl<AdministratorMapper, Admi
         QueryWrapper<Administrator> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("aname", adminDTO.getAname())
                 .eq("pwd", adminDTO.getPwd());
+        Administrator one;
         try {
-            Administrator one= getOne(queryWrapper);
-            if (one != null) {
-                BeanUtil.copyProperties(one,adminDTO,true);
-                return adminDTO;
-            }
-            else{
-                throw new ServiceException(Constants.CODE_600,"用户名或用户错误");
-            }
+            one= getOne(queryWrapper);
         }catch (Exception e){
             LOG.error(e);
             throw new ServiceException(Constants.CODE_500,"系统错误");
         }
-
+        if (one != null) {
+            BeanUtil.copyProperties(one,adminDTO,true);
+            return adminDTO;
+        }
+        else{
+            throw new ServiceException(Constants.CODE_600,"用户名或用户错误");
+        }
 
 
     }

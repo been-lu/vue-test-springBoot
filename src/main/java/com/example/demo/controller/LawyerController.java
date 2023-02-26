@@ -2,16 +2,15 @@ package com.example.demo.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Constants;
 import com.example.demo.common.Result;
 import com.example.demo.pojo.DTO.LawyerDTO;
 import com.example.demo.pojo.Lawyer;
 import com.example.demo.service.LawyerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/lawyer")
@@ -38,8 +37,32 @@ public class LawyerController {
             if (!lawyerService.list(queryWrapper).isEmpty()) {
                 return lawyerService.update(lawyer,queryWrapper);
             } else {
+                if(lawyer.getPwd()==null)
+                    lawyer.setPwd("123456");
                 return lawyerService.save(lawyer);
             }
         }
+    }
+
+    //分页查询
+    @GetMapping("/page")
+    public Result findPage(@RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize,
+                           @RequestParam(defaultValue = "") String lname,
+                           @RequestParam(defaultValue = "") String email,
+                           @RequestParam(defaultValue = "") String location) {
+        IPage<Lawyer> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Lawyer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("lid");
+        if (!"".equals(lname)) {
+            queryWrapper.like("lname", lname);
+        }
+        if (!"".equals(email)) {
+            queryWrapper.like("email", email);
+        }
+        if (!"".equals(location)) {
+            queryWrapper.like("location", location);
+        }
+        return Result.success(lawyerService.page(page, queryWrapper));
     }
 }

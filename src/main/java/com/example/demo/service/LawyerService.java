@@ -23,19 +23,20 @@ public class LawyerService extends ServiceImpl<LawyerMapper, Lawyer> {
         QueryWrapper<Lawyer> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("email", lawyerDTO.getEmail())
                 .eq("pwd", lawyerDTO.getPwd());
+        Lawyer one;
         try {
-            Lawyer one= getOne(queryWrapper);
-            if (one != null) {
-                BeanUtil.copyProperties(one,lawyerDTO,true);
-                return lawyerDTO;
-            }
-            else{
-                throw new ServiceException(Constants.CODE_600,"用户名或用户错误");
-            }
+            one= getOne(queryWrapper);
+
         }catch (Exception e){
             LOG.error(e);
             throw new ServiceException(Constants.CODE_500,"系统错误");
         }
-
+        if (one != null) {
+            BeanUtil.copyProperties(one,lawyerDTO,true);
+            return lawyerDTO;
+        }
+        else{
+            throw new ServiceException(Constants.CODE_600,"用户名或用户错误");
+        }
     }
 }

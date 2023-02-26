@@ -40,19 +40,19 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("email", userDTO.getEmail())
                 .eq("pwd", userDTO.getPwd());
-        try {
-            User one = getOne(queryWrapper);
-            if (one != null) {
-                BeanUtil.copyProperties(one,userDTO,true);
-                return userDTO;
-            }
-            else{
-                throw new ServiceException(Constants.CODE_600,"用户名或用户错误");
-            }
-
+        User one;
+        try{
+            one = getOne(queryWrapper);
         } catch (Exception e) {
             LOG.error(e);
             throw new ServiceException(Constants.CODE_500,"系统错误");
+        }
+        if (one != null) {
+            BeanUtil.copyProperties(one,userDTO,true);
+            return userDTO;
+        }
+        else{
+            throw new ServiceException(Constants.CODE_600,"用户名或用户错误");
         }
     }
 

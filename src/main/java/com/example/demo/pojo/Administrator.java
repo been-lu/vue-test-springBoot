@@ -12,4 +12,5 @@ public class Administrator {
     private Long aid;
     private String aname;
     private String pwd;
+    private String others;
 }
