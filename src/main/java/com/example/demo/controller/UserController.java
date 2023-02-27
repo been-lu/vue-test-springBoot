@@ -1,11 +1,13 @@
 package com.example.demo.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Constants;
 import com.example.demo.common.Result;
+import com.example.demo.exception.ServiceException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.DTO.UserDTO;
 import com.example.demo.pojo.Lawyer;
@@ -36,16 +38,6 @@ public class UserController {
     public Boolean saveOrUpdate(@NotNull @RequestBody User user) {
         //add or update
         if (user.getUid() == null) {
-//            Boolean res=userService.signin(user);
-//            if(!res){//登陆失败，同一邮箱不允许多个账户
-//                QueryWrapper<User> queryWrapper=new QueryWrapper<>();
-//                queryWrapper.eq("email", user.getEmail());
-//                userMapper.update(user,queryWrapper);
-//                return true;
-//            }
-//            else{
-//                return false;
-//            }
             user.setPwd("123456");
             return userService.save(user);
         } else {
@@ -65,7 +57,9 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public Result register(@RequestBody User user) {
+    public Result register(@RequestBody UserDTO userDTO) {
+        User user=new User();
+        BeanUtil.copyProperties(userDTO, user, true);
         user.setUname("null");
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("email", user.getEmail());
@@ -73,8 +67,8 @@ public class UserController {
             return Result.error(Constants.CODE_600, "信箱已注册");
         } else {
             userService.save(user);
-            User one=userService.getOne(queryWrapper);
-            return Result.success(one);
+
+            return Result.success();
         }
 
     }

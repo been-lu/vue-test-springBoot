@@ -1,11 +1,13 @@
 package com.example.demo.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Constants;
 import com.example.demo.common.Result;
+import com.example.demo.exception.ServiceException;
 import com.example.demo.pojo.DTO.LawyerDTO;
 import com.example.demo.pojo.Lawyer;
 import com.example.demo.service.LawyerService;
@@ -45,7 +47,9 @@ public class LawyerController {
     }
 
     @PostMapping("/register")
-    public Result register(@RequestBody Lawyer lawyer) {
+    public Result register(@RequestBody LawyerDTO lawyerDTO) {
+        Lawyer lawyer=new Lawyer();
+        BeanUtil.copyProperties(lawyerDTO, lawyer, true);
         lawyer.setLname("null");
         QueryWrapper<Lawyer> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("email", lawyer.getEmail());
@@ -53,7 +57,13 @@ public class LawyerController {
             return Result.error(Constants.CODE_600, "信箱已注册");
         } else {
             lawyerService.save(lawyer);
-            Lawyer one=lawyerService.getOne(queryWrapper);
+            Lawyer one;
+            try {
+                one = lawyerService.getOne(queryWrapper);
+            } catch (Exception e) {
+                throw new ServiceException(Constants.CODE_500,"系统错误");
+            }
+
             return Result.success(one);
         }
 

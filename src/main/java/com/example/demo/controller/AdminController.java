@@ -20,20 +20,21 @@ public class AdminController {
     private AdministratorService administratorService;
 
     @PostMapping("/saveOrUpdate")
-    public Boolean saveOrUpdate(@RequestBody Administrator administrator) {
+    public Result saveOrUpdate(@RequestBody Administrator administrator) {
         if (administrator.getAid() != null) {
-            return administratorService.updateById(administrator);
+            administratorService.updateById(administrator);
         } else {
             QueryWrapper<Administrator> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("aname", administrator.getAname());
             if (!administratorService.list(queryWrapper).isEmpty()) {
-                return administratorService.update(administrator, queryWrapper);
+                administratorService.update(administrator, queryWrapper);
             } else {
-                if(administrator.getPwd()==null)
+                if (administrator.getPwd() == null)
                     administrator.setPwd("123456");
-                return administratorService.save(administrator);
+                administratorService.save(administrator);
             }
         }
+        return Result.success();
     }
 
     @PostMapping("/login")
