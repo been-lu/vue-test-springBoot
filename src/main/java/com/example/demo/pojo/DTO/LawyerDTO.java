@@ -1,6 +1,5 @@
 package com.example.demo.pojo.DTO;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
@@ -12,5 +11,5 @@ public class LawyerDTO {
     private String others;
     private String email;
     private String pwd;
-
+    private String token;
 }

@@ -9,6 +9,7 @@ import com.example.demo.exception.ServiceException;
 import com.example.demo.mapper.AdministratorMapper;
 import com.example.demo.pojo.Administrator;
 import com.example.demo.pojo.DTO.AdminDTO;
+import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class AdministratorService  extends ServiceImpl<AdministratorMapper, Admi
         }
         if (one != null) {
             BeanUtil.copyProperties(one,adminDTO,true);
+            adminDTO.setToken(TokenUtils.genToken(adminDTO.getAid().toString(), adminDTO.getPwd()));
             return adminDTO;
         }
         else{

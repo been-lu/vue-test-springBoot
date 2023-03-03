@@ -10,6 +10,7 @@ import com.example.demo.exception.ServiceException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.DTO.UserDTO;
 import com.example.demo.pojo.User;
+import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         }
         if (one != null) {
             BeanUtil.copyProperties(one,userDTO,true);
+            userDTO.setToken(TokenUtils.genToken(userDTO.getUid().toString(), userDTO.getPwd()));
             return userDTO;
         }
         else{

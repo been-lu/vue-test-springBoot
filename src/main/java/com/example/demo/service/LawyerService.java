@@ -9,6 +9,7 @@ import com.example.demo.exception.ServiceException;
 import com.example.demo.mapper.LawyerMapper;
 import com.example.demo.pojo.DTO.LawyerDTO;
 import com.example.demo.pojo.Lawyer;
+import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ public class LawyerService extends ServiceImpl<LawyerMapper, Lawyer> {
         }
         if (one != null) {
             BeanUtil.copyProperties(one,lawyerDTO,true);
+            lawyerDTO.setToken(TokenUtils.genToken(lawyerDTO.getLid().toString(), lawyerDTO.getPwd()));
             return lawyerDTO;
         }
         else{
