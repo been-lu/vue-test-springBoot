@@ -30,20 +30,21 @@ public class LawyerController {
     }
 
     @PostMapping("/saveOrUpdate")
-    public Boolean saveOrUpdate(@RequestBody Lawyer lawyer) {
+    public Result saveOrUpdate(@RequestBody Lawyer lawyer) {
         if (lawyer.getLid() != null) {
-            return lawyerService.updateById(lawyer);
+            lawyerService.updateById(lawyer);
         } else {
             QueryWrapper<Lawyer> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("email", lawyer.getEmail());
             if (!lawyerService.list(queryWrapper).isEmpty()) {
-                return lawyerService.update(lawyer, queryWrapper);
+                lawyerService.update(lawyer, queryWrapper);
             } else {
                 if (lawyer.getPwd() == null)
                     lawyer.setPwd("123456");
-                return lawyerService.save(lawyer);
+                lawyerService.save(lawyer);
             }
         }
+        return Result.success();
     }
 
     @PostMapping("/register")

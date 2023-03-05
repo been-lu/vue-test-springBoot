@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,7 +13,9 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.DTO.UserDTO;
 import com.example.demo.pojo.Lawyer;
 import com.example.demo.pojo.User;
+import com.example.demo.pojo.UserType;
 import com.example.demo.service.UserService;
+import com.example.demo.utils.TokenUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,15 +38,24 @@ public class UserController {
 
     //前端记得要一定要有邮箱
     @PostMapping("/saveOrUpdate")
-    public Boolean saveOrUpdate(@NotNull @RequestBody User user) {
+    public Result saveOrUpdate(@NotNull @RequestBody User user) {
         //add or update
-        if (user.getUid() == null) {
-            user.setPwd("123456");
-            return userService.save(user);
+        if (user.getUid() != null) {
+            userService.updateById(user);
         } else {
-            return userService.updateById(user);
+            QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("email", user.getEmail());
+            if(!userService.list(queryWrapper).isEmpty()){
+                userService.update(user, queryWrapper);
+            }
+            else{
+                if(user.getPwd()==null){
+                    user.setPwd("123456");
+                }
+                userService.save(user);
+            }
         }
-
+        return Result.success();
     }
 
     @PostMapping("/login")
@@ -91,6 +103,9 @@ public class UserController {
         if (!"".equals(location)) {
             queryWrapper.like("location", location);
         }
+        UserType userType= TokenUtils.getCurrentUser();
+        System.out.println("当前用户信息======\n"+userType+"======\n");
+
         return Result.success(userService.page(page, queryWrapper));
     }
 
