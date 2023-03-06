@@ -10,7 +10,9 @@ import com.example.demo.common.Result;
 import com.example.demo.exception.ServiceException;
 import com.example.demo.pojo.DTO.LawyerDTO;
 import com.example.demo.pojo.Lawyer;
+import com.example.demo.pojo.UserType;
 import com.example.demo.service.LawyerService;
+import com.example.demo.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,6 +79,13 @@ public class LawyerController {
                            @RequestParam(defaultValue = "") String lname,
                            @RequestParam(defaultValue = "") String email,
                            @RequestParam(defaultValue = "") String location) {
+        //权限校验
+        UserType userType= TokenUtils.getCurrentUser();
+        if(!userType.getUserType().equals("admin")){
+            return Result.error(Constants.CODE_401, "权限异常");
+        }
+
+        //业务执行
         IPage<Lawyer> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Lawyer> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("lid");

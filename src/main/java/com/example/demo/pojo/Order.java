@@ -5,18 +5,18 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
-@TableName("order")
+@TableName("affair")
 public class Order {
-    @TableId(value = "oid")
+    @TableId(type = IdType.ASSIGN_ID)
     private Long oid;
-    private Long  uid;
+    private Long uid;
     private Long lid;
-    private Date date;
+    private Timestamp date;
     private Integer status;//0为提出未接受，1为已接受，2为受理中，3为已完结
-    private Integer cid;
+    private Long cid;
     private String others;
 
 

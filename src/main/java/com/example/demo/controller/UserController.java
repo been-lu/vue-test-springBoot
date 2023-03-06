@@ -2,16 +2,13 @@ package com.example.demo.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Constants;
 import com.example.demo.common.Result;
-import com.example.demo.exception.ServiceException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.DTO.UserDTO;
-import com.example.demo.pojo.Lawyer;
 import com.example.demo.pojo.User;
 import com.example.demo.pojo.UserType;
 import com.example.demo.service.UserService;
@@ -91,6 +88,12 @@ public class UserController {
                                 @RequestParam(defaultValue = "") String uname,
                                 @RequestParam(defaultValue = "") String email,
                                 @RequestParam(defaultValue = "") String location) {
+        //权限校验
+        UserType userType= TokenUtils.getCurrentUser();
+        if(!userType.getUserType().equals("admin")){
+            return Result.error(Constants.CODE_401, "权限异常");
+        }
+        //业务执行
         IPage<User> page = new Page<>(pageNum, pageSize);
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("uid");
@@ -103,8 +106,6 @@ public class UserController {
         if (!"".equals(location)) {
             queryWrapper.like("location", location);
         }
-        UserType userType= TokenUtils.getCurrentUser();
-        System.out.println("当前用户信息======\n"+userType+"======\n");
 
         return Result.success(userService.page(page, queryWrapper));
     }
