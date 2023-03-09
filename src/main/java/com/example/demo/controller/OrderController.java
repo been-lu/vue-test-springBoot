@@ -23,7 +23,10 @@ public class OrderController {
 
     //分页查询
     @GetMapping("/page")
-    public Result findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    public Result findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize,
+                           @RequestParam(defaultValue = "") String uid,
+                           @RequestParam(defaultValue = "") String lid,
+                           @RequestParam(defaultValue = "") String status) {
         //权限校验
         UserType userType= TokenUtils.getCurrentUser();
         IPage<Order> page = new Page<>(pageNum, pageSize);
@@ -38,6 +41,16 @@ public class OrderController {
             queryWrapper.eq("lid", userType.getId());
         }
         queryWrapper.orderByDesc("oid");
+        if (!"".equals(uid)) {
+            queryWrapper.like("uid", uid);
+        }
+        if (!"".equals(lid)) {
+            queryWrapper.like("lid", lid);
+        }
+        if (!"".equals(status)) {
+            queryWrapper.like("status", Integer.parseInt(status));
+        }
+
         return Result.success(orderService.page(page, queryWrapper));
     }
 
