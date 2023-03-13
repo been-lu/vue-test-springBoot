@@ -3,9 +3,7 @@ package com.example.demo.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.demo.common.Constants;
 import com.example.demo.common.Result;
-import com.example.demo.pojo.DTO.OrderDTO;
 import com.example.demo.pojo.Order;
 import com.example.demo.pojo.UserType;
 import com.example.demo.service.OrderService;
@@ -31,6 +29,7 @@ public class OrderController {
         UserType userType= TokenUtils.getCurrentUser();
         IPage<Order> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        //这里后续记得改
         if(userType.getUserType().equals("admin")){
             ;
         }
@@ -40,6 +39,7 @@ public class OrderController {
         if(userType.getUserType().equals("lawyer")){
             queryWrapper.eq("lid", userType.getId());
         }
+        //
         queryWrapper.orderByDesc("oid");
         if (!"".equals(uid)) {
             queryWrapper.like("uid", uid);
