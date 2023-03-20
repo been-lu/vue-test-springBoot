@@ -24,9 +24,9 @@ public class ContractController {
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize,
                            @RequestParam(defaultValue = "") String status) {
-        UserType userType= TokenUtils.getCurrentUser();
+        UserType userType = TokenUtils.getCurrentUser();
         //准备在下一层实现
-
+        return Result.success(contractService.pageByUserType(pageNum, pageSize, userType));
 
 
     }

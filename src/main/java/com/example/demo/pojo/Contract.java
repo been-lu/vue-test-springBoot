@@ -5,11 +5,15 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 
 @Data
 @TableName("contract")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Contract {
     @TableId(value = "cid")
     private Long cid;
@@ -20,11 +24,14 @@ public class Contract {
 
 
     public Contract(Contract contract) {
-        setCid(contract.getCid());
-        setOid(contract.getOid());
-        setOthers(contract.getOthers());
-        setPrice(contract.getPrice());
-        setStatus(contract.getStatus());
+        if(Objects.nonNull(contract)){
+            setCid(contract.getCid());
+            setOid(contract.getOid());
+            setOthers(contract.getOthers());
+            setPrice(contract.getPrice());
+            setStatus(contract.getStatus());
+        }
+
     }
 
 }
