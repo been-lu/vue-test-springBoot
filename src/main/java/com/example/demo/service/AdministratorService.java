@@ -10,15 +10,16 @@ import com.example.demo.mapper.AdministratorMapper;
 import com.example.demo.pojo.Administrator;
 import com.example.demo.pojo.DTO.AdminDTO;
 import com.example.demo.utils.TokenUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2
 public class AdministratorService  extends ServiceImpl<AdministratorMapper, Administrator> {
     @Autowired
     AdministratorMapper administratorMapper;
 
-    private static final Log LOG = Log.get();
 
     public AdminDTO login(AdminDTO adminDTO){
         QueryWrapper<Administrator> queryWrapper=new QueryWrapper<>();
@@ -28,7 +29,7 @@ public class AdministratorService  extends ServiceImpl<AdministratorMapper, Admi
         try {
             one= getOne(queryWrapper);
         }catch (Exception e){
-            LOG.error(e);
+            log.error(e);
             throw new ServiceException(Constants.CODE_500,"系统错误");
         }
         if (one != null) {

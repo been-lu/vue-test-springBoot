@@ -30,9 +30,9 @@ public class OrderController {
         IPage<Order> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
         //这里后续记得改
-        if(userType.getUserType().equals("admin")){
-            ;
-        }
+//        if(userType.getUserType().equals("admin")){
+//            ;
+//        }
         if(userType.getUserType().equals("user")){
             queryWrapper.eq("uid", userType.getId());
         }

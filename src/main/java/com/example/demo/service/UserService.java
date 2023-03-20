@@ -11,6 +11,7 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.DTO.UserDTO;
 import com.example.demo.pojo.User;
 import com.example.demo.utils.TokenUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Log4j2
 public class UserService extends ServiceImpl<UserMapper, User> {
     @Autowired
     UserMapper userMapper;
 
-    private static final Log LOG = Log.get();
 
     /*
      *列举一下要实现的功能
@@ -45,7 +46,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         try{
             one = getOne(queryWrapper);
         } catch (Exception e) {
-            LOG.error(e);
+            log.error(e);
             throw new ServiceException(Constants.CODE_500,"系统错误");
         }
         if (one != null) {

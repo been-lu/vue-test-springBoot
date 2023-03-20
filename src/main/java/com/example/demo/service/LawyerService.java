@@ -10,15 +10,16 @@ import com.example.demo.mapper.LawyerMapper;
 import com.example.demo.pojo.DTO.LawyerDTO;
 import com.example.demo.pojo.Lawyer;
 import com.example.demo.utils.TokenUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2
 public class LawyerService extends ServiceImpl<LawyerMapper, Lawyer> {
     @Autowired
     LawyerMapper lawyerMapper;
 
-    private static final Log LOG = Log.get();
 
     public LawyerDTO login(LawyerDTO lawyerDTO) {
         QueryWrapper<Lawyer> queryWrapper=new QueryWrapper<>();
@@ -29,7 +30,7 @@ public class LawyerService extends ServiceImpl<LawyerMapper, Lawyer> {
             one= getOne(queryWrapper);
 
         }catch (Exception e){
-            LOG.error(e);
+            log.error(e);
             throw new ServiceException(Constants.CODE_500,"系统错误");
         }
         if (one != null) {
