@@ -19,8 +19,16 @@ public class MsgController {
     @Autowired
     MsgService msgService;
 
+
+    /**
+     * 改接口对所有用户开放，但根据用户类别不同，返回数据不同
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/page")
-    public Result findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize){
+    public Result findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize,
+                           @RequestParam Boolean findAll){
         UserType userType= TokenUtils.getCurrentUser();
         IPage<Msg> page=new Page<>(pageNum,pageSize);
         QueryWrapper<Msg> queryWrapper=new QueryWrapper<>();
@@ -31,10 +39,17 @@ public class MsgController {
         if (userType.getUserType().equals("lawyer")){
             queryWrapper.eq("lid", userType.getId());
         }
+        if(!findAll){
+            queryWrapper.eq("status", "未受理");
+        }
         return Result.success(msgService.page(page, queryWrapper));
     }
 
-
+    /**
+     * 该功能只针对律师以及用户开放
+     * @param msg
+     * @return
+     */
     @PostMapping("/save")
     public Result save(@NotNull @RequestBody Msg msg){
         UserType userType= TokenUtils.getCurrentUser();
@@ -44,8 +59,27 @@ public class MsgController {
         if (userType.getUserType().equals("lawyer")){
             msg.setLid(userType.getId());
         }
+        msg.setStatus("未受理");
         msgService.save(msg);
         return Result.success();
     }
 
+    /**
+     * 该功能只对管理员开放，在管理员处理完请求后管理员执行
+     * @param msg
+     * @return
+     */
+    @PostMapping("/update")
+    public Result update(@NotNull @RequestBody Msg msg){
+        UserType userType=TokenUtils.getCurrentUser();
+        if(!userType.getClass().equals("admin")){
+            return Result.error(Constants.CODE_401, "权限异常");
+        }
+        if(msg.getMid()==null){
+            return Result.error(Constants.CODE_600, "业务异常");
+        }
+        msg.setStatus("已受理");
+        msgService.updateById(msg);
+        return Result.success();
+    }
 }

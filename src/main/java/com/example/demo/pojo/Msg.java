@@ -17,6 +17,13 @@ public class Msg {
     private Long lid;
     private String others;
     private Date date;
-    private Integer status;//0为未处理，1为已处理
+
+    /**
+     * 已受理，未受理
+     */
+    private String status;
+
+    private String description;
+
 
 }

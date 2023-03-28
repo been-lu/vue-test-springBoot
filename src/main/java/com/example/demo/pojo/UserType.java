@@ -12,4 +12,6 @@ public class UserType {
     private String userType;
 
     private Long id;
+
+
 }

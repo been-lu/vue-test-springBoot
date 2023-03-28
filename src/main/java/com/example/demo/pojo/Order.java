@@ -15,9 +15,16 @@ public class Order {
     private Long uid;
     private Long lid;
     private Timestamp date;
-    private Integer status;//0为提出未接受，1为已接受，2为受理中，3为已完结
+
+    /**
+     *0为提出未接受，1为已接受，2为受理中，3为已完结
+     */
+    private Integer status;
+
     private Long cid;
     private String others;
+    private double price;
+    private String description;
 
 
 

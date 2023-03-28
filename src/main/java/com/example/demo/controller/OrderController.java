@@ -19,7 +19,16 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    //分页查询
+
+    /**
+     * 预约记录的查询
+     * @param pageNum
+     * @param pageSize
+     * @param uid
+     * @param lid
+     * @param status
+     * @return
+     */
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize,
                            @RequestParam(defaultValue = "") String uid,
@@ -58,6 +67,9 @@ public class OrderController {
     public Result saveOrUpdate(@NotNull @RequestBody Order order){
         //权限校验
         UserType userType= TokenUtils.getCurrentUser();
+        if(userType.getClass().equals("user")){
+
+        }
         if (order.getUid()==null){
             order.setUid(userType.getId());
         }
