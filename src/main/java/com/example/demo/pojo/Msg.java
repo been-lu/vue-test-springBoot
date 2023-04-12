@@ -3,13 +3,17 @@ package com.example.demo.pojo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 //用户或律师提出
 @Data
 @TableName("msg")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Msg {
     @TableId(value = "mid")
     private Long mid;
