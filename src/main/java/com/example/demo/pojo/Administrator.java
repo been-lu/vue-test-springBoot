@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @TableName("admin")
-public class Administrator{
+public class Administrator {
     @TableId(type = IdType.ASSIGN_ID)
     private Long aid;
     private String aname;

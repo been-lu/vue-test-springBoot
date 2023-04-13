@@ -26,8 +26,9 @@ public class LawyerController {
     public Result login(@RequestBody LawyerDTO lawyerDTO) {
         String email = lawyerDTO.getEmail();
         String pwd = lawyerDTO.getPwd();
-        if (StrUtil.isBlank(email) || StrUtil.isBlank(pwd))
+        if (StrUtil.isBlank(email) || StrUtil.isBlank(pwd)) {
             return Result.error(Constants.CODE_400, "参数错误");
+        }
         return Result.success(lawyerService.login(lawyerDTO));
     }
 
@@ -41,8 +42,9 @@ public class LawyerController {
             if (!lawyerService.list(queryWrapper).isEmpty()) {
                 lawyerService.update(lawyer, queryWrapper);
             } else {
-                if (lawyer.getPwd() == null)
+                if (lawyer.getPwd() == null) {
                     lawyer.setPwd("123456");
+                }
                 lawyerService.save(lawyer);
             }
         }
@@ -51,7 +53,7 @@ public class LawyerController {
 
     @PostMapping("/register")
     public Result register(@RequestBody LawyerDTO lawyerDTO) {
-        Lawyer lawyer=new Lawyer();
+        Lawyer lawyer = new Lawyer();
         BeanUtil.copyProperties(lawyerDTO, lawyer, true);
         lawyer.setLname("null");
         QueryWrapper<Lawyer> queryWrapper = new QueryWrapper<>();
@@ -64,7 +66,7 @@ public class LawyerController {
             try {
                 one = lawyerService.getOne(queryWrapper);
             } catch (Exception e) {
-                throw new ServiceException(Constants.CODE_500,"系统错误");
+                throw new ServiceException(Constants.CODE_500, "系统错误");
             }
 
             return Result.success(one);
@@ -80,8 +82,8 @@ public class LawyerController {
                            @RequestParam(defaultValue = "") String email,
                            @RequestParam(defaultValue = "") String location) {
         //权限校验
-        UserType userType= TokenUtils.getCurrentUser();
-        if(!userType.getUserType().equals("admin")){
+        UserType userType = TokenUtils.getCurrentUser();
+        if (!userType.getUserType().equals("admin")) {
             return Result.error(Constants.CODE_401, "权限异常");
         }
 

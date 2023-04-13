@@ -13,7 +13,7 @@ public class Lawyer {
     private String lname;
     private Integer age;
     private String location;
-    private Integer status;//0为未注册，1为经管理员审核注册
+    private Integer status; //0为未注册，1为经管理员审核注册
     private String others;
     private String email;
     private String pwd;

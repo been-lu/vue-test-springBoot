@@ -43,19 +43,18 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         queryWrapper.eq("email", userDTO.getEmail())
                 .eq("pwd", userDTO.getPwd());
         User one;
-        try{
+        try {
             one = getOne(queryWrapper);
         } catch (Exception e) {
             log.error(e);
-            throw new ServiceException(Constants.CODE_500,"系统错误");
+            throw new ServiceException(Constants.CODE_500, "系统错误");
         }
         if (one != null) {
-            BeanUtil.copyProperties(one,userDTO,true);
+            BeanUtil.copyProperties(one, userDTO, true);
             userDTO.setToken(TokenUtils.genToken(userDTO.getUid().toString(), userDTO.getPwd()));
             return userDTO;
-        }
-        else{
-            throw new ServiceException(Constants.CODE_600,"用户名或用户错误");
+        } else {
+            throw new ServiceException(Constants.CODE_600, "用户名或用户错误");
         }
     }
 

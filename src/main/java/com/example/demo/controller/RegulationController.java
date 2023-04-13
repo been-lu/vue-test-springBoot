@@ -21,23 +21,22 @@ public class RegulationController {
     RegulationService regulationService;
 
     @GetMapping("/page")
-    public Result findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize){
+    public Result findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         IPage<Regulation> page = new Page<>(pageNum, pageSize);
-        QueryWrapper<Regulation> queryWrapper=new QueryWrapper<>();
+        QueryWrapper<Regulation> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("did");
         return Result.success(regulationService.page(page));
     }
 
     @PostMapping("/saveOrUpdate")
-    public Result saveOrUpdate(@NotNull @RequestBody Regulation regulation){
-        UserType userType= TokenUtils.getCurrentUser();
-        if(userType.getUserType().equals("user")){
+    public Result saveOrUpdate(@NotNull @RequestBody Regulation regulation) {
+        UserType userType = TokenUtils.getCurrentUser();
+        if (userType.getUserType().equals("user")) {
             return Result.error(Constants.CODE_401, "权限异常");
         }
-        if(regulation.getDid()==null){
+        if (regulation.getDid() == null) {
             regulationService.save(regulation);
-        }
-        else{
+        } else {
             regulationService.updateById(regulation);
         }
         return Result.success();

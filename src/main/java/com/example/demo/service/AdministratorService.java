@@ -16,29 +16,28 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Log4j2
-public class AdministratorService  extends ServiceImpl<AdministratorMapper, Administrator> {
+public class AdministratorService extends ServiceImpl<AdministratorMapper, Administrator> {
     @Autowired
     AdministratorMapper administratorMapper;
 
 
-    public AdminDTO login(AdminDTO adminDTO){
-        QueryWrapper<Administrator> queryWrapper=new QueryWrapper<>();
+    public AdminDTO login(AdminDTO adminDTO) {
+        QueryWrapper<Administrator> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("aname", adminDTO.getAname())
                 .eq("pwd", adminDTO.getPwd());
         Administrator one;
         try {
-            one= getOne(queryWrapper);
-        }catch (Exception e){
+            one = getOne(queryWrapper);
+        } catch (Exception e) {
             log.error(e);
-            throw new ServiceException(Constants.CODE_500,"系统错误");
+            throw new ServiceException(Constants.CODE_500, "系统错误");
         }
         if (one != null) {
-            BeanUtil.copyProperties(one,adminDTO,true);
+            BeanUtil.copyProperties(one, adminDTO, true);
             adminDTO.setToken(TokenUtils.genToken(adminDTO.getAid().toString(), adminDTO.getPwd()));
             return adminDTO;
-        }
-        else{
-            throw new ServiceException(Constants.CODE_600,"用户名或用户错误");
+        } else {
+            throw new ServiceException(Constants.CODE_600, "用户名或用户错误");
         }
 
 

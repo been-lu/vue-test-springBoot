@@ -22,6 +22,7 @@ public class OrderController {
 
     /**
      * 预约记录的查询
+     *
      * @param pageNum
      * @param pageSize
      * @param uid
@@ -35,17 +36,17 @@ public class OrderController {
                            @RequestParam(defaultValue = "") String lid,
                            @RequestParam(defaultValue = "") String status) {
         //权限校验
-        UserType userType= TokenUtils.getCurrentUser();
+        UserType userType = TokenUtils.getCurrentUser();
         IPage<Order> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
         //这里后续记得改
 //        if(userType.getUserType().equals("admin")){
 //            ;
 //        }
-        if(userType.getUserType().equals("user")){
+        if (userType.getUserType().equals("user")) {
             queryWrapper.eq("uid", userType.getId());
         }
-        if(userType.getUserType().equals("lawyer")){
+        if (userType.getUserType().equals("lawyer")) {
             queryWrapper.eq("lid", userType.getId());
         }
         //
@@ -64,19 +65,18 @@ public class OrderController {
     }
 
     @PostMapping("/saveOrUpdate")
-    public Result saveOrUpdate(@NotNull @RequestBody Order order){
+    public Result saveOrUpdate(@NotNull @RequestBody Order order) {
         //权限校验
-        UserType userType= TokenUtils.getCurrentUser();
-        if(userType.getClass().equals("user")){
+        UserType userType = TokenUtils.getCurrentUser();
+        if (userType.getClass().equals("user")) {
 
         }
-        if (order.getUid()==null){
+        if (order.getUid() == null) {
             order.setUid(userType.getId());
         }
-        if(order.getOid()==null){
+        if (order.getOid() == null) {
             orderService.save(order);
-        }
-        else{
+        } else {
             orderService.updateById(order);
         }
         return Result.success();

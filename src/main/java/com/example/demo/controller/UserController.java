@@ -40,13 +40,12 @@ public class UserController {
         if (user.getUid() != null) {
             userService.updateById(user);
         } else {
-            QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("email", user.getEmail());
-            if(!userService.list(queryWrapper).isEmpty()){
+            if (!userService.list(queryWrapper).isEmpty()) {
                 userService.update(user, queryWrapper);
-            }
-            else{
-                if(user.getPwd()==null){
+            } else {
+                if (user.getPwd() == null) {
                     user.setPwd("123456");
                 }
                 userService.save(user);
@@ -60,14 +59,14 @@ public class UserController {
         String email = userDTO.getEmail();
         String pwd = userDTO.getPwd();
         if (StrUtil.isBlank(email) || StrUtil.isBlank(pwd))
-            return Result.error(Constants.CODE_400,"参数错误");
+            return Result.error(Constants.CODE_400, "参数错误");
         return Result.success(userService.login(userDTO));
     }
 
 
     @PostMapping("/register")
     public Result register(@RequestBody UserDTO userDTO) {
-        User user=new User();
+        User user = new User();
         BeanUtil.copyProperties(userDTO, user, true);
         user.setUname("null");
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -81,16 +80,17 @@ public class UserController {
         }
 
     }
+
     //分页查询
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum,
-                                @RequestParam Integer pageSize,
-                                @RequestParam(defaultValue = "") String uname,
-                                @RequestParam(defaultValue = "") String email,
-                                @RequestParam(defaultValue = "") String location) {
+                           @RequestParam Integer pageSize,
+                           @RequestParam(defaultValue = "") String uname,
+                           @RequestParam(defaultValue = "") String email,
+                           @RequestParam(defaultValue = "") String location) {
         //权限校验
-        UserType userType= TokenUtils.getCurrentUser();
-        if(!userType.getUserType().equals("admin")){
+        UserType userType = TokenUtils.getCurrentUser();
+        if (!userType.getUserType().equals("admin")) {
             return Result.error(Constants.CODE_401, "权限异常");
         }
         //业务执行

@@ -1,6 +1,5 @@
 package com.example.demo.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,7 @@ public class Msg {
     private Date date;
 
     /**
-     * 已受理，未受理
+     * 已受理，未受理。
      */
     private String status;
 
