@@ -13,6 +13,10 @@ import java.sql.Timestamp;
 @TableName("affair")
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ *  预约
+ *  订单
+ */
 public class Order {
     @TableId(type = IdType.ASSIGN_ID)
     private Long oid;
@@ -23,7 +27,7 @@ public class Order {
     /**
      *0为提出未接受，1为已接受，2为受理中，3为已完结
      */
-    private Integer status;
+    private String status;
 
     private Long cid;
     private String others;

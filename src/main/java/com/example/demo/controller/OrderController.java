@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.demo.common.Constants;
 import com.example.demo.common.Result;
 import com.example.demo.pojo.Order;
 import com.example.demo.pojo.UserType;
@@ -64,21 +65,46 @@ public class OrderController {
         return Result.success(orderService.page(page, queryWrapper));
     }
 
+    /**
+     * @param order
+     * @return
+     */
     @PostMapping("/saveOrUpdate")
     public Result saveOrUpdate(@NotNull @RequestBody Order order) {
         //权限校验
         UserType userType = TokenUtils.getCurrentUser();
-        if (userType.getClass().equals("user")) {
 
+
+        if (userType.getUserType().equals("user")) {
+            if (order.getOid() == null) {
+                if (order.getUid() == null) {
+                    order.setUid(userType.getId());
+                }
+                order.setStatus("未接受");
+                orderService.save(order);
+            }
+            Order one = orderService.getById(order.getOid());
+            if (!one.getStatus().equals(order.getStatus())) {
+                return Result.error(Constants.CODE_400, "不合法的修改");
+            }
+            return Result.success();
         }
-        if (order.getUid() == null) {
-            order.setUid(userType.getId());
+
+        if (userType.getUserType().equals("lawyer")) {
+            if (order.getLid() == null) {
+                order.setLid(userType.getId());
+                orderService.save(order);
+            } else {
+                orderService.updateById(order);
+            }
+            return Result.success();
         }
-        if (order.getOid() == null) {
-            orderService.save(order);
-        } else {
-            orderService.updateById(order);
+
+        if (userType.getUserType().equals("admin")) {
+            orderService.saveOrUpdate(order);
+            return Result.success();
         }
+
         return Result.success();
 
     }

@@ -1,6 +1,5 @@
 package com.example.demo.pojo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -14,6 +13,9 @@ import java.util.Objects;
 @TableName("contract")
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * 合同表
+ */
 public class Contract {
     @TableId(value = "cid")
     private Long cid;
@@ -24,7 +26,7 @@ public class Contract {
 
 
     public Contract(Contract contract) {
-        if(Objects.nonNull(contract)){
+        if (Objects.nonNull(contract)) {
             setCid(contract.getCid());
             setOid(contract.getOid());
             setOthers(contract.getOthers());
